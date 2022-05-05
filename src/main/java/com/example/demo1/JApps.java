@@ -169,8 +169,26 @@ public class JApps extends Application {
 
 
     public static void sendTransderScene(Stage stage) throws IOException, SQLException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("sendTransfer.fxml"));
         Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
+
+//cash_value currency_value account_number title_value
+        Button sendTransfer = (Button)  primaryStage.lookup("#sendTransferBtn");
+        sendTransfer.setOnAction(
+                e -> {
+                    TextField cash_value  = (TextField)  primaryStage.lookup("#cash_value");
+                    TextField currency_value  = (TextField)  primaryStage.lookup("#currency_value");
+                    TextField account_number  = (TextField)  primaryStage.lookup("#account_number");
+                    TextField title_value  = (TextField)  primaryStage.lookup("#title_value");
+
+                    Float cash =  Float.parseFloat(cash_value.getText());
+                    int currency =  Integer.parseInt(currency_value.getText());
+                    String account = account_number.getText();
+                    String tittle = title_value.getText();
+
+
+                }
+        );
 
 
 
