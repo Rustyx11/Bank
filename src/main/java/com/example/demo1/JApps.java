@@ -3,8 +3,6 @@ package com.example.demo1;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,26 +26,22 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
 
-import static javafx.scene.paint.Color.*;
-
 public class JApps extends Application {
-
     private static final Logger logger = Logger.getLogger(JApps.class.getName());
     private UserDao userDao = new UserDao();
+    User user = new User();
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws SQLException, IOException {
         primaryStage.setTitle("JavaFX Welcome");
+        loginPage(primaryStage);
+    }
 
+    public void loginPage(Stage primaryStage) throws IOException, SQLException {
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         grid.setHgap(10);
@@ -81,17 +75,17 @@ public class JApps extends Application {
             if (!StringPool.BLANK.equals(username) && !StringPool.BLANK.equals(password)) {
                 try {
 
-                        User user = this.loginUserObject(username, password);
+                    user = this.loginUserObject(username, password);
 
-                        boolean userId = userDao.userLogin(user.getUsername(),user.getPassword());
-                        if (userId) {
-                            this.alert("Save", "Zalogowany!", AlertType.INFORMATION);
-                            user = userDao.getInfoUser(user.getUsername());
-                            login(primaryStage,user);
+                    boolean userId = userDao.userLogin(user.getUsername(),user.getPassword());
+                    if (userId) {
+                        this.alert("Save", "Zalogowany!", AlertType.INFORMATION);
+                        user = userDao.getInfoUser(user.getUsername());
+                        mainPage(primaryStage);
 
-                        } else {
-                            this.alert("Error", "Blad!", AlertType.ERROR);
-                        }
+                    } else {
+                        this.alert("Error", "Blad!", AlertType.ERROR);
+                    }
 
                 } catch (Exception exception) {
                     logger.log(Level.SEVERE, exception.getMessage());
@@ -107,7 +101,7 @@ public class JApps extends Application {
         primaryStage.show();
     }
 
-    public void login(Stage stage, User user) throws IOException, SQLException {
+    public void mainPage(Stage stage) throws IOException, SQLException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main.fxml"));
         Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
 
@@ -117,12 +111,25 @@ public class JApps extends Application {
         Label lableAccout = (Label) primaryStage.lookup("#accout_holder_label");
         lableAccout.setText(" ");
         bankAccounts.forEach( account -> {
-            System.out.print("Test");
             lableAccout.setText(lableAccout.getText() + "\n" + account.getCurrencyLong() + " - " + account.getCurrentCash() + " \n");
         } );
+        Button sendTransfer = (Button)  primaryStage.lookup("#sendTransfer");
+        sendTransfer.setOnAction(
+                e -> {
+                    try {
+                        sendTransderScene(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
         ImageView card = (ImageView) primaryStage.lookup("#card_img_holder");
-        String cardVisa = "file:///Users/apple/Downloads/demo1/src/main/resources/img/visa.png";
-        String cardMasterCard = "file:///Users/apple/Downloads/demo1/src/main/resources/img/mastercard.png";
+        String cardVisa = "src/main/resources/img/visa.png";
+        String cardMasterCard = "src/main/resources/img/mastercard.png";
+        File directory = new File("./");
+        System.out.println(directory.getAbsolutePath());
         //Image cardVisa = new Image("file:///Users/apple/Downloads/demo1/src/main/resources/img/visa.png");
         //Image cardMasterCard = new Image("file:///Users/apple/Downloads/demo1/src/main/resources/img/mastercard.png");
         List<Card> cards = CardDao.getCardInfo(user.getId());
@@ -161,6 +168,18 @@ public class JApps extends Application {
     }
 
 
+    public static void sendTransderScene(Stage stage) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main.fxml"));
+        Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
+
+
+
+        stage.setTitle("Hello!");
+        stage.setScene(primaryStage);
+        stage.show();
+
+    }
+
     public void alert(String title, String message, AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -189,7 +208,7 @@ public class JApps extends Application {
     }
 
     private static Image addTextOnImage(String url,User user, Card card) throws IOException {
-        BufferedImage image = ImageIO.read(new URL(url));
+        BufferedImage image = ImageIO.read(new File(url));
         //get the Graphics object
         Graphics g = image.getGraphics();
         //set font
@@ -217,6 +236,9 @@ public class JApps extends Application {
 
         return new ImageView(wr).getImage();
     }
+
+
+
 
 
     public static void main(String[] args) {
