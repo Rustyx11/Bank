@@ -100,7 +100,7 @@ class UserDao {
         return users.get(0);
     }
 
-    public boolean userExists(String username) throws SQLException {
+    public static boolean userExists(String username) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         List<User> users = new ArrayList<>();
@@ -139,20 +139,19 @@ class UserDao {
         return users.isEmpty() ? false : true;
     }
 
-    public int saveUser(User user) throws SQLException {
+    public static int saveUser(String username, String last_name, String first_name, String password, String admin_permission) throws SQLException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
         try {
+            Boolean admin_permission_bool = false;
             connection = Database.getDBConnection();
             connection.setAutoCommit(false);
-            String query = "INSERT INTO user(username, last_name, first_name, password) VALUES(?, ?, ?, ?)";
+            if(admin_permission == "Admin"){
+                admin_permission_bool = true;
+            }
+            String query = "INSERT INTO user(username, last_name, first_name, password,admin_permission) VALUES('" +username + "','"+ last_name +"', '"+first_name +"', '"+password+"'," + admin_permission_bool +")";
             statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-            int counter = 1;
-            statement.setString(counter++, user.getUsername());
-            statement.setString(counter++, user.getLastName());
-            statement.setString(counter++, user.getFirstName());
-            statement.setString(counter++, user.getPassword());
             statement.executeUpdate();
             connection.commit();
             resultSet = statement.getGeneratedKeys();

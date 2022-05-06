@@ -190,14 +190,149 @@ public class JApps extends Application {
         stage.show();
     }
 
-    public static void adminPage(Stage stage) throws IOException, SQLException {
+    public void adminPage(Stage stage) throws IOException, SQLException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("mainAdmin.fxml"));
         Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
+
+        Button addClient = (Button)  primaryStage.lookup("#addClient");
+        addClient.setOnAction(
+                e -> {
+                    try {
+                        addClientPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button addAccountAndCard = (Button)  primaryStage.lookup("#addAccountAndCard");
+        addAccountAndCard.setOnAction(
+                e -> {
+                    try {
+                        addAccountAndCardPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button AthCredit = (Button)  primaryStage.lookup("#AthCredit");
+        AthCredit.setOnAction(
+                e -> {
+                    try {
+                        athCreditPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+        stage.setTitle("Hello!");
+        stage.setScene(primaryStage);
+        stage.show();
+    }
+
+    public void addClientPage(Stage stage) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("addClient.fxml"));
+        Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
+
+        Button addClient = (Button)  primaryStage.lookup("#addClient");
+        addClient.setOnAction(
+                e -> {
+                    try {
+                        addClientPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button addAccountAndCard = (Button)  primaryStage.lookup("#addAccountAndCard");
+        addAccountAndCard.setOnAction(
+                e -> {
+                    try {
+                        addAccountAndCardPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button AthCredit = (Button)  primaryStage.lookup("#AthCredit");
+        AthCredit.setOnAction(
+                e -> {
+                    try {
+                        athCreditPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        ChoiceBox userType =  (ChoiceBox)  primaryStage.lookup("#userType");
+        userType.setItems(FXCollections.observableArrayList(
+                "Klient","Admin")
+        );
+
+        Button addUserBtn =  (Button) primaryStage.lookup("#addUserBtn");
+        addUserBtn.setOnAction(actionEvent -> {
+            TextField username  = (TextField)  primaryStage.lookup("#username");
+            TextField first_name  = (TextField)  primaryStage.lookup("#first_name");
+            TextField last_name  = (TextField)  primaryStage.lookup("#last_name");
+            TextField password  = (TextField)  primaryStage.lookup("#password");
+
+            String usernameStr = username.getText();
+            String first_nameStr = first_name.getText();
+            String last_nameStr = last_name.getText();
+            String passwordStr = password.getText();
+            String typeStr = userType.getSelectionModel().getSelectedItem().toString();
+            try {
+                if( UserDao.userExists(usernameStr)){
+                    this.alert("Bład","Zła nazwa użytkownia, taka już jest",AlertType.ERROR);
+                } else {
+                    UserDao.saveUser(usernameStr,last_nameStr,first_nameStr,passwordStr,typeStr);
+                    this.alert("Info","Użytkownik poprawie zarejestrowany",AlertType.INFORMATION);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        });
+
+        stage.setTitle("Hello!");
+        stage.setScene(primaryStage);
+        stage.show();
+
+    }
+
+    public static void addAccountAndCardPage(Stage stage) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("addAccountAndCard.fxml"));
+        Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
+
 
 
         stage.setTitle("Hello!");
         stage.setScene(primaryStage);
         stage.show();
+
+    }
+
+    public static void athCreditPage(Stage stage) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("athCredit.fxml"));
+        Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
+
+
+
+        stage.setTitle("Hello!");
+        stage.setScene(primaryStage);
+        stage.show();
+
     }
 
     public static void sendTransderScene(Stage stage) throws IOException, SQLException {
