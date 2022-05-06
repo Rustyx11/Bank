@@ -12,6 +12,9 @@ public class User implements Serializable {
     private String firstName;
     private String password;
 
+
+    private Boolean admin_permission;
+
     public int getId() {
         return id;
     }
@@ -51,5 +54,14 @@ public class User implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public Boolean getAdmin_permission() {
+        return admin_permission;
+    }
+
+    public void setAdmin_permission(Boolean admin_permission) {
+        this.admin_permission = admin_permission;
+    }
+
 
 }

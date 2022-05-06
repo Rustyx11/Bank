@@ -78,7 +78,12 @@ public class JApps extends Application {
                     if (userId) {
                         //this.alert("Save", "Zalogowany!", AlertType.INFORMATION);
                         user = userDao.getInfoUser(user.getUsername());
-                        mainPage(stage);
+                        if(user.getAdmin_permission() == false){
+                            mainPage(stage);
+                        } else if (user.getAdmin_permission() == true) {
+                            adminPage(stage);
+                        }
+
 
                     } else {
                         this.alert("Error", "Blad!", AlertType.ERROR);
@@ -185,6 +190,15 @@ public class JApps extends Application {
         stage.show();
     }
 
+    public static void adminPage(Stage stage) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("mainAdmin.fxml"));
+        Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
+
+
+        stage.setTitle("Hello!");
+        stage.setScene(primaryStage);
+        stage.show();
+    }
 
     public static void sendTransderScene(Stage stage) throws IOException, SQLException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("sendTransfer.fxml"));
@@ -362,7 +376,6 @@ public class JApps extends Application {
 
 
                                                             document.addTitle("Potwierdzenie przelewu");
-                                                            document.addSubject("An example to show how attributes can be added to pdf files.");
 
                                                             document.close();
                                                             writer.close();

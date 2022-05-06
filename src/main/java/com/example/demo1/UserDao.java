@@ -23,7 +23,7 @@ class UserDao {
         try {
             connection = Database.getDBConnection();
             connection.setAutoCommit(false);
-            String query = "SELECT id, username, last_name, first_name, password FROM user WHERE username = '"+username+"' AND password = '"+password+"'";
+            String query = "SELECT id, username, last_name, first_name, password,admin_permission FROM user WHERE username = '"+username+"' AND password = '"+password+"'";
             System.out.print(query);
             statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
@@ -34,6 +34,7 @@ class UserDao {
                 user.setLastName(resultSet.getString(3));
                 user.setFirstName(resultSet.getString(4));
                 user.setPassword(resultSet.getString(5));
+                user.setAdmin_permission(resultSet.getBoolean(6));
                 users.add(user);
             }
 
@@ -68,7 +69,7 @@ class UserDao {
         try {
             connection = Database.getDBConnection();
             connection.setAutoCommit(false);
-            String query = "SELECT id, username, last_name, first_name, password FROM user WHERE username = '"+username+"'";
+            String query = "SELECT id, username, last_name, first_name, password, admin_permission FROM user WHERE username = '"+username+"'";
             statement = connection.prepareStatement(query);
             ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -78,6 +79,7 @@ class UserDao {
                 user.setLastName(resultSet.getString(3));
                 user.setFirstName(resultSet.getString(4));
                 user.setPassword(resultSet.getString(5));
+                user.setAdmin_permission(resultSet.getBoolean(6));
                 users.add(user);
             }
             return users.get(0);

@@ -66,7 +66,7 @@ public class TransferDao {
                 if(shortcode_accoutFrom == shortcode_accoutTo){
                      rates = 1f;
                 } else{
-                     rates = rates(currencyShortcode(accountNumber));
+                     rates =  1f / rates(currencyShortcode(accountNumber));
                 }
 
 
