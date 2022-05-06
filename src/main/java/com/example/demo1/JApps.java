@@ -1,9 +1,11 @@
 package com.example.demo1;
 
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,64 +13,59 @@ import java.awt.image.BufferedImage;
 
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
+import javafx.scene.chart.XYChart;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import javafx.util.Callback;
+import org.json.JSONArray;
+import org.json.JSONObject;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.imageio.ImageIO;
+
+import static com.example.demo1.TransferDao.getTransferHistory;
 
 public class JApps extends Application {
     private static final Logger logger = Logger.getLogger(JApps.class.getName());
     private UserDao userDao = new UserDao();
-    User user = new User();
+    static User user = new User();
 
     @Override
-    public void start(Stage primaryStage) throws SQLException, IOException {
+    public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("JavaFX Welcome");
         loginPage(primaryStage);
+
     }
 
-    public void loginPage(Stage primaryStage) throws IOException, SQLException {
-        GridPane grid = new GridPane();
-        grid.setAlignment(Pos.CENTER);
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(25, 25, 25, 25));
+    public void loginPage(Stage stage) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login.fxml"));
+        Scene primaryStage  = new Scene(fxmlLoader.load(), 1280, 720);
 
 
-
-        Label userNameLabel = new Label("Username:");
-        grid.add(userNameLabel, 0, 1);
-
-        TextField usernameTextField = new TextField();
-        grid.add(usernameTextField, 1, 1);
-
-
-        Label passwordLabel = new Label("Password:");
-        grid.add(passwordLabel, 0, 2);
-
-        PasswordField passwordField = new PasswordField();
-        grid.add(passwordField, 1, 2);
-
-        Button saveButton = new Button("Save");
-        HBox hBox = new HBox(10);
-        hBox.setAlignment(Pos.BOTTOM_RIGHT);
-        hBox.getChildren().add(saveButton);
-        grid.add(hBox, 1, 5);
-
+        TextField usernameTextField = (TextField) primaryStage.lookup("#login");
+        TextField passwordField = (TextField) primaryStage.lookup("#password");
+        Button saveButton =  (Button) primaryStage.lookup("#loginBtn");
         saveButton.setOnAction(actionEvent -> {
             String username = usernameTextField.getText().trim();
             String password = passwordField.getText();
@@ -79,9 +76,9 @@ public class JApps extends Application {
 
                     boolean userId = userDao.userLogin(user.getUsername(),user.getPassword());
                     if (userId) {
-                        this.alert("Save", "Zalogowany!", AlertType.INFORMATION);
+                        //this.alert("Save", "Zalogowany!", AlertType.INFORMATION);
                         user = userDao.getInfoUser(user.getUsername());
-                        mainPage(primaryStage);
+                        mainPage(stage);
 
                     } else {
                         this.alert("Error", "Blad!", AlertType.ERROR);
@@ -96,12 +93,12 @@ public class JApps extends Application {
 
         });
 
-        Scene scene = new Scene(grid, 1280, 720);
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        stage.setTitle("Hello!");
+        stage.setScene(primaryStage);
+        stage.show();
     }
 
-    public void mainPage(Stage stage) throws IOException, SQLException {
+    public static void mainPage(Stage stage) throws IOException, SQLException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main.fxml"));
         Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
 
@@ -113,11 +110,35 @@ public class JApps extends Application {
         bankAccounts.forEach( account -> {
             lableAccout.setText(lableAccout.getText() + "\n" + account.getCurrencyLong() + " - " + account.getCurrentCash() + " \n");
         } );
+        Button youraccout = (Button)  primaryStage.lookup("#youraccout");
+        youraccout.setOnAction(
+                e -> {
+                    try {
+                        mainPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
         Button sendTransfer = (Button)  primaryStage.lookup("#sendTransfer");
         sendTransfer.setOnAction(
                 e -> {
                     try {
                         sendTransderScene(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button historyPage = (Button)  primaryStage.lookup("#historyPage");
+        historyPage.setOnAction(
+                e -> {
+                    try {
+                        historyPageScene(stage);
                     } catch (IOException ex) {
                         ex.printStackTrace();
                     } catch (SQLException ex) {
@@ -148,9 +169,6 @@ public class JApps extends Application {
                 }
             } else if (BankCard.getCardProducentId() == 2) {
                 try {
-                    //Scene  test= card.getParent().getScene();
-                    //test
-                    //card.setImage( addTextOnImage(cardMasterCard, user, BankCard));
                     ImageView tempCard = new ImageView(addTextOnImage(cardMasterCard, user, BankCard));
                     box.getChildren().add(tempCard);
                 } catch (IOException e) {
@@ -172,21 +190,204 @@ public class JApps extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("sendTransfer.fxml"));
         Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
 
-//cash_value currency_value account_number title_value
-        Button sendTransfer = (Button)  primaryStage.lookup("#sendTransferBtn");
+        Button youraccout = (Button)  primaryStage.lookup("#youraccout");
+        youraccout.setOnAction(
+                e -> {
+                    try {
+                        mainPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button sendTransfer = (Button)  primaryStage.lookup("#sendTransfer");
         sendTransfer.setOnAction(
+                e -> {
+                    try {
+                        sendTransderScene(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button historyPage = (Button)  primaryStage.lookup("#historyPage");
+        historyPage.setOnAction(
+                e -> {
+                    try {
+                        historyPageScene(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+        List<Account> accounts = new ArrayList<>(accountDao.getAccountInfo(user.getId()));
+
+        ChoiceBox account_from =  (ChoiceBox)  primaryStage.lookup("#account_from");
+        accounts.forEach(account ->{
+                    account_from.getItems().add(account.getAccout_number());
+        });
+
+        Button sendTransferBtn = (Button)  primaryStage.lookup("#sendTransferBtn");
+        sendTransferBtn.setOnAction(
                 e -> {
                     TextField cash_value  = (TextField)  primaryStage.lookup("#cash_value");
                     TextField currency_value  = (TextField)  primaryStage.lookup("#currency_value");
                     TextField account_number  = (TextField)  primaryStage.lookup("#account_number");
                     TextField title_value  = (TextField)  primaryStage.lookup("#title_value");
 
+                    String accout_number_from = account_from.getSelectionModel().getSelectedItem().toString();
                     Float cash =  Float.parseFloat(cash_value.getText());
-                    int currency =  Integer.parseInt(currency_value.getText());
-                    String account = account_number.getText();
-                    String tittle = title_value.getText();
+                    String account_to = account_number.getText();
+                    String title = title_value.getText();
+
+                    try {
+                        TransferDao.sendTransfer(user,accout_number_from,account_to,cash,title,"Jan Kowalski");
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+        stage.setTitle("Hello!");
+        stage.setScene(primaryStage);
+        stage.show();
+
+    }
 
 
+    public static void historyPageScene(Stage stage) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("history.fxml"));
+        Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
+
+        Button youraccout = (Button)  primaryStage.lookup("#youraccout");
+        youraccout.setOnAction(
+                e -> {
+                    try {
+                        mainPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button sendTransfer = (Button)  primaryStage.lookup("#sendTransfer");
+        sendTransfer.setOnAction(
+                e -> {
+                    try {
+                        sendTransderScene(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button historyPage = (Button)  primaryStage.lookup("#historyPage");
+        historyPage.setOnAction(
+                e -> {
+                    try {
+                        historyPageScene(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        List<Account> accounts = new ArrayList<>(accountDao.getAccountInfo(user.getId()));
+
+        ChoiceBox account_select =  (ChoiceBox)  primaryStage.lookup("#account_select");
+        accounts.forEach(account ->{
+            account_select.getItems().add(account.getAccout_number());
+        });
+        Button show = (Button)  primaryStage.lookup("#show_history");
+        show.setOnAction(
+                e -> {
+                    try {
+                        VBox historyBox = (VBox)  primaryStage.lookup("#vbox_history");
+                        ObservableList<Transfer> transfers =  FXCollections.observableArrayList(getTransferHistory(account_select.getSelectionModel().getSelectedItem().toString()));
+                        historyBox.getChildren().clear();
+                        TableView table = new TableView();
+                        table.setEditable(false);
+                        TableColumn<Transfer, String> dateColumn //
+                                = new TableColumn<Transfer, String>("Data");
+                        dateColumn.setCellValueFactory(new PropertyValueFactory("date"));
+                        TableColumn<Transfer, String> cash //
+                                = new TableColumn<Transfer, String>("Środki");
+                        cash.setCellValueFactory(new PropertyValueFactory("cash"));
+                        TableColumn<Transfer, String> type //
+                                = new TableColumn<Transfer, String>("Typ przelewu");
+                        type.setCellValueFactory(new PropertyValueFactory("type"));
+                        TableColumn<Transfer, String> pdf //
+                                = new TableColumn<Transfer, String>("Potwierdzenie");
+
+                        Callback<TableColumn<Transfer, String>, TableCell<Transfer, String>> cellFactory
+                                = //
+                                new Callback<TableColumn<Transfer, String>, TableCell<Transfer, String>>() {
+                                    @Override
+                                    public TableCell call(final TableColumn<Transfer, String> param) {
+                                        final TableCell<Transfer, String> cell = new TableCell<Transfer, String>() {
+
+                                            final Button btn = new Button("PDF");
+
+                                            @Override
+                                            public void updateItem(String item, boolean empty) {
+                                                super.updateItem(item, empty);
+                                                if (empty) {
+                                                    setGraphic(null);
+                                                    setText(null);
+                                                } else {
+                                                    btn.setOnAction(event -> {
+                                                        Transfer transfer = getTableView().getItems().get(getIndex());
+                                                        System.out.println(transfer.getCash()
+                                                                + "   " + transfer.getId_user_form());
+
+                                                        Document document = new Document();
+                                                        try
+                                                        {
+                                                            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream("potwierdzenie_przelewu.pdf"));
+                                                            document.open();
+                                                            document.add(new Paragraph("Potwierdzenie przelwu"));
+                                                            document.add(new Paragraph("Tutuł: " + transfer.getTitle()));
+                                                            document.add(new Paragraph("Kwota: " + transfer.getCash() + " " + transfer.getCurrency_short()));
+                                                            document.add(new Paragraph("Odbiorca: " + transfer.getRecpient()));
+
+
+                                                            document.addTitle("Potwierdzenie przelewu");
+                                                            document.addSubject("An example to show how attributes can be added to pdf files.");
+
+                                                            document.close();
+                                                            writer.close();
+                                                        } catch (Exception e)
+                                                        {
+                                                            e.printStackTrace();
+                                                        }
+                                                    });
+                                                    setGraphic(btn);
+                                                    setText(null);
+                                                }
+                                            }
+                                        };
+                                        return cell;
+                                    }
+                                };
+                        pdf.setCellFactory(cellFactory);
+
+
+                        table.getColumns().addAll(dateColumn,cash,type,pdf);
+                        table.setItems(transfers);
+                        historyBox.getChildren().add(table);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
                 }
         );
 
@@ -197,6 +398,7 @@ public class JApps extends Application {
         stage.show();
 
     }
+
 
     public void alert(String title, String message, AlertType alertType) {
         Alert alert = new Alert(alertType);
@@ -259,8 +461,10 @@ public class JApps extends Application {
 
 
 
+
     public static void main(String[] args) {
         launch(args);
     }
 
 }
+
