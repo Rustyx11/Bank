@@ -60,6 +60,45 @@ class UserDao {
         return users.isEmpty() ? false : true;
     }
 
+    public static List<User> getClientsList() throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        List<User> users = new ArrayList<>();
+
+        try {
+            connection = Database.getDBConnection();
+            connection.setAutoCommit(false);
+            String query = "SELECT id, username, last_name, first_name, password, admin_permission FROM user WHERE admin_permission = 0";
+            statement = connection.prepareStatement(query);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                User user = new User();
+                user.setId(resultSet.getInt(1));
+                user.setUsername(resultSet.getString(2));
+                user.setLastName(resultSet.getString(3));
+                user.setFirstName(resultSet.getString(4));
+                user.setPassword(resultSet.getString(5));
+                user.setAdmin_permission(resultSet.getBoolean(6));
+                users.add(user);
+            }
+            return users;
+
+            //return users.isEmpty() ? false : true;
+        } catch (SQLException exception) {
+            logger.log(Level.SEVERE, exception.getMessage());
+        } finally {
+            if (null != statement) {
+                statement.close();
+            }
+
+            if (null != connection) {
+                connection.close();
+            }
+        }
+
+        return users;
+    }
+
 
     public User getInfoUser(String username) throws SQLException {
         Connection connection = null;

@@ -2,11 +2,10 @@ package com.example.demo1;
 
 import java.awt.*;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.awt.image.BufferedImage;
@@ -15,13 +14,8 @@ import java.awt.image.BufferedImage;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -35,10 +29,7 @@ import javafx.scene.image.WritableImage;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import org.json.JSONArray;
-import org.json.JSONObject;
 import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
 
@@ -311,11 +302,102 @@ public class JApps extends Application {
 
     }
 
-    public static void addAccountAndCardPage(Stage stage) throws IOException, SQLException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("addAccountAndCard.fxml"));
+    public void addAccountAndCardPage(Stage stage) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("addCard.fxml"));
         Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
 
+        Button addClient = (Button)  primaryStage.lookup("#addClient");
+        addClient.setOnAction(
+                e -> {
+                    try {
+                        addClientPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button addAccountAndCard = (Button)  primaryStage.lookup("#addAccountAndCard");
+        addAccountAndCard.setOnAction(
+                e -> {
+                    try {
+                        addAccountAndCardPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button AthCredit = (Button)  primaryStage.lookup("#AthCredit");
+        AthCredit.setOnAction(
+                e -> {
+                    try {
+                        athCreditPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
 
+        List<User> usersList = new ArrayList<>(UserDao.getClientsList());
+        ChoiceBox account_list =  (ChoiceBox)  primaryStage.lookup("#userId");
+        usersList.forEach(user ->{
+            account_list.getItems().add(user.getFirstName() + " " + user.getLastName());
+        });
+
+        List<Currency> currences = new ArrayList<>();
+        currences = CurrencyDao.getCurrencyList();
+        ChoiceBox currencyid =  (ChoiceBox)  primaryStage.lookup("#currencyid");
+        currences.forEach(Currencae ->{
+            currencyid.getItems().add(Currencae.getNameShort());
+        });
+
+        List<CardProducents> cardProducentslist = new ArrayList<>(CardProducentsDao.getCardProducentsList());
+        ChoiceBox cardProducentField =  (ChoiceBox)  primaryStage.lookup("#cardProducent");
+        cardProducentslist.forEach(cardProducent ->{
+            cardProducentField.getItems().add(cardProducent.getName());
+        });
+
+
+        Button addCardBtn =  (Button) primaryStage.lookup("#addCardBtn");
+        addCardBtn.setOnAction(actionEvent -> {
+
+            TextField account_number  = (TextField)  primaryStage.lookup("#account_number");
+            TextField starting_cash  = (TextField)  primaryStage.lookup("#starting_cash");
+            TextField card_number  = (TextField)  primaryStage.lookup("#card_number");
+            TextField year  = (TextField)  primaryStage.lookup("#year");
+            TextField month  = (TextField)  primaryStage.lookup("#month");
+
+            String account_numberStr = account_number.getText();
+            Float starting_cashStr = Float.parseFloat(starting_cash.getText());
+            String card_numberStr = card_number.getText();
+            String yearStr = year.getText();
+            String monthdStr = month.getText();
+            String userName  = account_list.getSelectionModel().getSelectedItem().toString();
+            int currencyId = currencyid.getSelectionModel().getSelectedIndex();
+            int cardProducents = cardProducentField.getSelectionModel().getSelectedIndex();
+            AtomicInteger userId = new AtomicInteger();
+            usersList.forEach(user -> {
+                if((user.getFirstName() + " " + user.getLastName()) ==  userName){
+                    userId.set(user.getId());
+                }
+            });
+
+            try {
+                BankAccountDao.addBankAccount(userId.get(),currencyId,starting_cashStr,account_numberStr);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+
+
+
+
+        });
 
         stage.setTitle("Hello!");
         stage.setScene(primaryStage);

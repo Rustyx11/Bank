@@ -3,9 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -80,60 +78,10 @@
                         <RowConstraints fx:id="card_holder" maxHeight="663.0" minHeight="0.0" prefHeight="646.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Label text="Dodaj nowego klienta" />
+                        <Label text="Witaj, pracowniku super banku" />
                         <Label id="card_holder" fx:id="accout_holder_label" text="" />
                         <ImageView id="card_img_holder" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.rowIndex="1" />
-                        <HBox id="holder_card" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                     <children>
-                        <GridPane prefHeight="651.0" prefWidth="325.0">
-                          <columnConstraints>
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                          </columnConstraints>
-                          <rowConstraints>
-                            <RowConstraints maxHeight="79.0" minHeight="0.0" prefHeight="79.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="79.0" minHeight="79.0" prefHeight="79.0" vgrow="SOMETIMES" />
-                            <RowConstraints maxHeight="79.0" minHeight="79.0" prefHeight="79.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="79.0" minHeight="79.0" prefHeight="79.0" vgrow="SOMETIMES" />
-                              <RowConstraints maxHeight="-Infinity" minHeight="79.0" prefHeight="79.0" vgrow="SOMETIMES" />
-                            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                              <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                          </rowConstraints>
-                           <children>
-                              <Label text="Imie" GridPane.rowIndex="1">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Nazwa użytkowanika">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Nazwisko" GridPane.rowIndex="2">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Hasło" GridPane.rowIndex="3">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Label text="Typ" GridPane.rowIndex="4">
-                                 <GridPane.margin>
-                                    <Insets left="10.0" />
-                                 </GridPane.margin>
-                              </Label>
-                              <Button id="addUserBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="61.0" text="Dodaj" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                              <TextField id="password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <TextField id="first_name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField id="last_name" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                              <ChoiceBox id="userType" prefHeight="26.0" prefWidth="166.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <TextField id="username" GridPane.columnIndex="1" />
-                           </children>
-                        </GridPane>
-                     </children></HBox>
+                        <HBox id="holder_card" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1" />
                     </children>
                 </GridPane>
             </children>
