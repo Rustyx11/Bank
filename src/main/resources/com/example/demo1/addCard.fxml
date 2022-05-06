@@ -115,19 +115,13 @@
                                                 <Insets left="10.0" />
                                             </GridPane.margin>
                                         </Label>
-                                        <Label text="Hasło" GridPane.rowIndex="4">
-                                            <GridPane.margin>
-                                                <Insets left="10.0" />
-                                            </GridPane.margin>
-                                        </Label>
                                         <Label text="Klient">
                                             <GridPane.margin>
                                                 <Insets left="10.0" />
                                             </GridPane.margin>
                                         </Label>
-                                        <TextField id="password" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                        <TextField id="first_name" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                        <TextField id="last_name" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <TextField id="account_number" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                        <TextField id="starting_cash" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                                         <ChoiceBox id="userId" prefHeight="26.0" prefWidth="166.0" GridPane.columnIndex="1" />
                               <ChoiceBox id="currencyid" prefHeight="26.0" prefWidth="166.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     </children>
@@ -167,10 +161,10 @@
                                     <Insets left="10.0" />
                                  </GridPane.margin>
                               </Label>
-                              <Button id="addUserBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="61.0" text="Dodaj" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <TextField id="password" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <TextField id="first_name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                              <TextField id="last_name" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                              <Button id="addCardBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="61.0" text="Dodaj" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <TextField id="month" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                              <TextField id="card_number" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                              <TextField id="year" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                               <ChoiceBox id="cardProducent" prefHeight="26.0" prefWidth="166.0" GridPane.columnIndex="1" />
                            </children>
                            <padding>

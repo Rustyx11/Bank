@@ -37,6 +37,7 @@
                   <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                   <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
@@ -53,11 +54,16 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                  <Button alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="52.0" prefWidth="147.0" style="-fx-background-color: transparent;" text="Wniosek o kredyt" GridPane.rowIndex="4">
+                  <Button id="credit" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="52.0" prefWidth="147.0" style="-fx-background-color: transparent;" text="Wniosek o kredyt" GridPane.rowIndex="4">
                      <cursor>
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
+                   <Button id="creditapplication" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="52.0" prefWidth="147.0" style="-fx-background-color: transparent;" text="Twoje wnioski" GridPane.rowIndex="5">
+                       <cursor>
+                           <Cursor fx:constant="HAND" />
+                       </cursor>
+                   </Button>
                   <Button id="youraccout" fx:id="youraccout" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="49.0" prefWidth="149.0" style="-fx-background-color: Transparent;" text="Twoje konto" textOverrun="CLIP" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Bold" size="14.0" />
@@ -74,7 +80,7 @@
                         <Insets left="10.0" />
                      </GridPane.margin>
                   </ImageView>
-                  <Label id="personData" prefHeight="80.0" prefWidth="140.0" text="Label" GridPane.rowIndex="5">
+                  <Label id="personData" prefHeight="80.0" prefWidth="140.0" text="Label" GridPane.rowIndex="6">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>

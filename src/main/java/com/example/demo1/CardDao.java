@@ -1,9 +1,6 @@
 package com.example.demo1;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,4 +35,42 @@ public class CardDao {
         return Cards;
     }
 
+
+
+    public static int addBankAccount(int cardProducent, int idAccount, String number, String year, String month) throws SQLException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        try {
+            connection = Database.getDBConnection();
+            connection.setAutoCommit(false);
+
+            String query = "INSERT INTO cards(`card_producent_id`,`account_id`,`number`,`valid_year`,`valid_month`) VALUES(" +cardProducent + ","+ idAccount +", '"+number+"', '"+year+"','" + month +"')";
+            statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+            statement.executeUpdate();
+            connection.commit();
+            resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getInt(1);
+            }
+        } catch (SQLException exception) {
+            if (null != connection) {
+                connection.rollback();
+            }
+        } finally {
+            if (null != resultSet) {
+                resultSet.close();
+            }
+
+            if (null != statement) {
+                statement.close();
+            }
+
+            if (null != connection) {
+                connection.close();
+            }
+        }
+
+        return 0;
+    }
 }

@@ -98,6 +98,32 @@ public class JApps extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("main.fxml"));
         Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
 
+        Button creditapplication = (Button)  primaryStage.lookup("#creditapplication");
+        creditapplication.setOnAction(
+                e -> {
+                    try {
+                        applicastionsList(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+        Button credit = (Button)  primaryStage.lookup("#credit");
+        credit.setOnAction(
+                e -> {
+                    try {
+                        getCreditPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
         Label lblData = (Label) primaryStage.lookup("#personData");
         lblData.setText(user.getFirstName() +  " " + user.getLastName());
         List<BankAccount> bankAccounts = BankAccountDao.getAccountInfo(user.getId());
@@ -378,11 +404,11 @@ public class JApps extends Application {
             String yearStr = year.getText();
             String monthdStr = month.getText();
             String userName  = account_list.getSelectionModel().getSelectedItem().toString();
-            int currencyId = currencyid.getSelectionModel().getSelectedIndex();
+            int currencyId = currencyid.getSelectionModel().getSelectedIndex()+1;
             int cardProducents = cardProducentField.getSelectionModel().getSelectedIndex();
             AtomicInteger userId = new AtomicInteger();
             usersList.forEach(user -> {
-                if((user.getFirstName() + " " + user.getLastName()) ==  userName){
+                if((user.getFirstName() + " " + user.getLastName()).equals(userName)){
                     userId.set(user.getId());
                 }
             });
@@ -393,10 +419,11 @@ public class JApps extends Application {
                 e.printStackTrace();
             }
 
-
-
-
-
+            try {
+                CardDao.addBankAccount(cardProducents,userId.get(),card_numberStr,yearStr,monthdStr);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         });
 
         stage.setTitle("Hello!");
@@ -405,10 +432,373 @@ public class JApps extends Application {
 
     }
 
-    public static void athCreditPage(Stage stage) throws IOException, SQLException {
+    public static void getCreditPage(Stage stage) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("credit.fxml"));
+        Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
+
+        Button credit = (Button)  primaryStage.lookup("#credit");
+        credit.setOnAction(
+                e -> {
+                    try {
+                        getCreditPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+        Button creditapplication = (Button)  primaryStage.lookup("#creditapplication");
+        creditapplication.setOnAction(
+                e -> {
+                    try {
+                        applicastionsList(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+
+        ChoiceBox anotherCredits =  (ChoiceBox)  primaryStage.lookup("#anotherCredits");
+        anotherCredits.setItems(FXCollections.observableArrayList(
+                "Nie","Tak")
+        );
+        ChoiceBox listOfDebtor =  (ChoiceBox)  primaryStage.lookup("#listOfDebtor");
+        listOfDebtor.setItems(FXCollections.observableArrayList(
+                "Nie","Tak")
+        );
+        ChoiceBox workContract =  (ChoiceBox)  primaryStage.lookup("#workContract");
+        workContract.setItems(FXCollections.observableArrayList(
+                "Umowa zlecenie/ o dzieło","Umowa o pracę")
+        );
+
+        Button sendCreditBtn = (Button)  primaryStage.lookup("#sendCreditBtn");
+        sendCreditBtn.setOnAction(
+                e -> {
+                    //age pesel cash month children workContractMonth AvgPayout
+                    TextField ageField  =  (TextField) primaryStage.lookup("#age");
+                    TextField peselField  =  (TextField) primaryStage.lookup("#pesel");
+                    TextField cashField  = (TextField) primaryStage.lookup("#cash");
+                    TextField monthField  =  (TextField)  primaryStage.lookup("#month");
+                    TextField childrenField  =  (TextField)  primaryStage.lookup("#children");
+                    TextField workContractMonthField  = (TextField)  primaryStage.lookup("#workContractMonth");
+                    TextField AvgPayoutField  = (TextField) primaryStage.lookup("#AvgPayout");
+
+
+                    Float age  = Float.parseFloat(ageField.getText());
+                    String pesel  =   peselField.getText();
+                    Float cash  =Float.parseFloat(cashField.getText());
+                    int month  =  Integer.parseInt(monthField.getText());
+                    int children  =   Integer.parseInt(childrenField.getText());
+                    int workContractMonth  = Integer.parseInt( workContractMonthField.getText());
+                    Float AvgPayout  = Float.parseFloat(AvgPayoutField.getText());
+                    int anotherCreditsInt = anotherCredits.getSelectionModel().getSelectedIndex();
+                    int listOfDebtorInt = listOfDebtor.getSelectionModel().getSelectedIndex();
+                    int workContractInt = workContract.getSelectionModel().getSelectedIndex();
+                    try {
+                        creditDao.addCredit(user.getId(),age,pesel,cash,month,children,workContractMonth,AvgPayout,anotherCreditsInt,listOfDebtorInt,workContractInt);
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+        Button youraccout = (Button)  primaryStage.lookup("#youraccout");
+        youraccout.setOnAction(
+                e -> {
+                    try {
+                        mainPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button sendTransfer = (Button)  primaryStage.lookup("#sendTransfer");
+        sendTransfer.setOnAction(
+                e -> {
+                    try {
+                        sendTransderScene(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button historyPage = (Button)  primaryStage.lookup("#historyPage");
+        historyPage.setOnAction(
+                e -> {
+                    try {
+                        historyPageScene(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+        stage.setTitle("Hello!");
+        stage.setScene(primaryStage);
+        stage.show();
+
+    }
+
+    public static void applicastionsList(Stage stage) throws IOException, SQLException {
+        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("creditapplication.fxml"));
+        Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
+
+        Button creditapplication = (Button)  primaryStage.lookup("#creditapplication");
+        creditapplication.setOnAction(
+                e -> {
+                    try {
+                        applicastionsList(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+        Button credit = (Button)  primaryStage.lookup("#credit");
+        credit.setOnAction(
+                e -> {
+                    try {
+                        getCreditPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+        Button youraccout = (Button)  primaryStage.lookup("#youraccout");
+        youraccout.setOnAction(
+                e -> {
+                    try {
+                        mainPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button sendTransfer = (Button)  primaryStage.lookup("#sendTransfer");
+        sendTransfer.setOnAction(
+                e -> {
+                    try {
+                        sendTransderScene(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button historyPage = (Button)  primaryStage.lookup("#historyPage");
+        historyPage.setOnAction(
+                e -> {
+                    try {
+                        historyPageScene(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        List<Account> accounts = new ArrayList<>(accountDao.getAccountInfo(user.getId()));
+
+
+        VBox historyBox = (VBox)  primaryStage.lookup("#applications_holder");
+        ObservableList<Credit> transfers =  FXCollections.observableArrayList(creditDao.getApplication(user.getId()));
+        historyBox.getChildren().clear();
+        TableView table = new TableView();
+        table.setEditable(false);
+        TableColumn<Transfer, String> cash //
+                = new TableColumn<Transfer, String>("Kwota");
+        cash.setCellValueFactory(new PropertyValueFactory("cash"));
+        TableColumn<Transfer, String> type //
+                = new TableColumn<Transfer, String>("Status");
+        type.setCellValueFactory(new PropertyValueFactory("accepted"));
+
+        table.getColumns().addAll(cash,type);
+        table.setItems(transfers);
+        historyBox.getChildren().add(table);
+
+        stage.setTitle("Hello!");
+        stage.setScene(primaryStage);
+        stage.show();
+
+    }
+
+    public void athCreditPage(Stage stage) throws IOException, SQLException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("athCredit.fxml"));
         Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
 
+        Button addClient = (Button)  primaryStage.lookup("#addClient");
+        addClient.setOnAction(
+                e -> {
+                    try {
+                        addClientPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button addAccountAndCard = (Button)  primaryStage.lookup("#addAccountAndCard");
+        addAccountAndCard.setOnAction(
+                e -> {
+                    try {
+                        addAccountAndCardPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+        Button AthCredit = (Button)  primaryStage.lookup("#AthCredit");
+        AthCredit.setOnAction(
+                e -> {
+                    try {
+                        athCreditPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+        List<Account> accounts = new ArrayList<>(accountDao.getAccountInfo(user.getId()));
+
+
+        VBox historyBox = (VBox)  primaryStage.lookup("#credit_holder");
+        ObservableList<Credit> transfers =  FXCollections.observableArrayList(creditDao.getAllApplication());
+        TableView table = new TableView();
+        table.setEditable(false);
+        TableColumn<Credit, String> id //
+                = new TableColumn<Credit, String>("ID");
+        id.setCellValueFactory(new PropertyValueFactory("id"));
+
+        TableColumn<Credit, String> age //
+                = new TableColumn<Credit, String>("Wiek");
+        age.setCellValueFactory(new PropertyValueFactory("age"));
+
+
+        TableColumn<Credit, String> pesel //
+                = new TableColumn<Credit, String>("Pesel");
+        pesel.setCellValueFactory(new PropertyValueFactory("pesel"));
+
+        TableColumn<Credit, String> cash //
+                = new TableColumn<Credit, String>("Kwota kredytu");
+        cash.setCellValueFactory(new PropertyValueFactory("cash"));
+
+        TableColumn<Credit, String> month //
+                = new TableColumn<Credit, String>("Okres miesiecy");
+        month.setCellValueFactory(new PropertyValueFactory("month"));
+
+        TableColumn<Credit, String> children //
+                = new TableColumn<Credit, String>("Ilość dzieci");
+        children.setCellValueFactory(new PropertyValueFactory("children"));
+        TableColumn<Credit, String> AvgPayout //
+                = new TableColumn<Credit, String>("Srednie zarobki");
+        AvgPayout.setCellValueFactory(new PropertyValueFactory("AvgPayout"));
+
+        TableColumn<Credit, String> accept //
+                = new TableColumn<Credit, String>("Akcja");
+
+        Callback<TableColumn<Credit, String>, TableCell<Credit, String>> cellFactory
+                = //
+                new Callback<TableColumn<Credit, String>, TableCell<Credit, String>>() {
+                    @Override
+                    public TableCell call(final TableColumn<Credit, String> param) {
+                        final TableCell<Credit, String> cell = new TableCell<Credit, String>() {
+
+                            final Button btn = new Button("Akceptuj");
+
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        Credit credit = getTableView().getItems().get(getIndex());
+                                        try {
+                                            creditDao.acceptCredit(credit.getId(),credit.getCash());
+                                        } catch (SQLException e) {
+                                            e.printStackTrace();
+                                        }
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+        accept.setCellFactory(cellFactory);
+
+
+        TableColumn<Credit, String> denny //
+                = new TableColumn<Credit, String>("Akcja");
+
+        Callback<TableColumn<Credit, String>, TableCell<Credit, String>> cellFactory_
+                = //
+                new Callback<TableColumn<Credit, String>, TableCell<Credit, String>>() {
+                    @Override
+                    public TableCell call(final TableColumn<Credit, String> param) {
+                        final TableCell<Credit, String> cell = new TableCell<Credit, String>() {
+
+                            final Button btn = new Button("Nie akcept.");
+
+                            @Override
+                            public void updateItem(String item, boolean empty) {
+                                super.updateItem(item, empty);
+                                if (empty) {
+                                    setGraphic(null);
+                                    setText(null);
+                                } else {
+                                    btn.setOnAction(event -> {
+                                        Credit credit = getTableView().getItems().get(getIndex());
+                                        try {
+                                            creditDao.dennyCredit(credit.getId());
+                                        } catch (SQLException e) {
+                                            e.printStackTrace();
+                                        }
+                                    });
+                                    setGraphic(btn);
+                                    setText(null);
+                                }
+                            }
+                        };
+                        return cell;
+                    }
+                };
+        denny.setCellFactory(cellFactory_);
+
+
+
+
+
+        table.getColumns().addAll(id,age,pesel,cash,month,children,AvgPayout,accept,denny);
+        table.setItems(transfers);
+        historyBox.getChildren().add(table);
 
 
         stage.setTitle("Hello!");
@@ -420,6 +810,32 @@ public class JApps extends Application {
     public static void sendTransderScene(Stage stage) throws IOException, SQLException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("sendTransfer.fxml"));
         Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
+
+        Button creditapplication = (Button)  primaryStage.lookup("#creditapplication");
+        creditapplication.setOnAction(
+                e -> {
+                    try {
+                        applicastionsList(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+        Button credit = (Button)  primaryStage.lookup("#credit");
+        credit.setOnAction(
+                e -> {
+                    try {
+                        getCreditPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
 
         Button youraccout = (Button)  primaryStage.lookup("#youraccout");
         youraccout.setOnAction(
@@ -492,10 +908,35 @@ public class JApps extends Application {
 
     }
 
-
     public static void historyPageScene(Stage stage) throws IOException, SQLException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("history.fxml"));
         Scene primaryStage = new Scene(fxmlLoader.load(), 1280, 720);
+
+        Button creditapplication = (Button)  primaryStage.lookup("#creditapplication");
+        creditapplication.setOnAction(
+                e -> {
+                    try {
+                        applicastionsList(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
+
+        Button credit = (Button)  primaryStage.lookup("#credit");
+        credit.setOnAction(
+                e -> {
+                    try {
+                        getCreditPage(stage);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+        );
 
         Button youraccout = (Button)  primaryStage.lookup("#youraccout");
         youraccout.setOnAction(
@@ -629,7 +1070,6 @@ public class JApps extends Application {
 
     }
 
-
     public void alert(String title, String message, AlertType alertType) {
         Alert alert = new Alert(alertType);
         alert.setTitle(title);
@@ -687,8 +1127,15 @@ public class JApps extends Application {
         return new ImageView(wr).getImage();
     }
 
-
-
+    private static String creditState(String state) {
+        if(state == "0" ){
+            return "W trakcjie rozpatrywania";
+        } else if(state == "1" ){
+            return "Kredyt udzielony";
+        } else {
+            return  "Kredyt nie udzielony";
+        }
+    }
 
 
 

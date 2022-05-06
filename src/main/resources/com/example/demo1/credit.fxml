@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.demo1.mainController">
+   <children>
+      <GridPane prefHeight="720.0" prefWidth="1280.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="ALWAYS" maxWidth="195.0" minWidth="-Infinity" prefWidth="137.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="897.0" minWidth="40.0" prefWidth="616.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <GridPane prefHeight="465.0" prefWidth="199.0" style="-fx-background-color: Orange;">
+              <columnConstraints>
+                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="-Infinity" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="1.7976931348623157E308" percentHeight="10.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  <RowConstraints minHeight="10.0" percentHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button id="historyPage" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="52.0" prefWidth="148.0" style="-fx-background-color: Transparent;" text="Historia przelewów" GridPane.rowIndex="2">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="sendTransfer" alignment="BASELINE_LEFT" mnemonicParsing="false" onAction="#sendTransfer" prefHeight="50.0" prefWidth="151.0" style="-fx-background-color: Transparent;" text="Wyslij przelew" GridPane.rowIndex="3">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="credit" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="52.0" prefWidth="147.0" style="-fx-background-color: transparent;" text="Wniosek o kredyt" GridPane.rowIndex="4">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button id="youraccout" fx:id="youraccout" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="49.0" prefWidth="149.0" style="-fx-background-color: Transparent;" text="Twoje konto" textOverrun="CLIP" GridPane.rowIndex="1">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <ImageView fitHeight="17.0" fitWidth="170.0">
+                     <image>
+                        <Image url="@../../../img/SUPERBANK.png" />
+                     </image>
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin>
+                  </ImageView>
+                  <Label id="personData" prefHeight="80.0" prefWidth="140.0" text="Label" GridPane.rowIndex="6">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </Label>
+                  <Button id="creditapplication" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="52.0" prefWidth="147.0" style="-fx-background-color: transparent;" text="Twoje wnioski" GridPane.rowIndex="5">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+               </children>
+            </GridPane>
+            <GridPane prefHeight="718.0" prefWidth="732.0" GridPane.columnIndex="1">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="480.0" minHeight="10.0" prefHeight="480.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Label alignment="TOP_LEFT" prefHeight="17.0" prefWidth="150.0" text="Wniosek o kredyt">
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </Label>
+                  <VBox prefHeight="477.0" prefWidth="630.0" GridPane.rowIndex="1">
+                     <children>
+                        <VBox id="vbox_history" prefHeight="358.0" prefWidth="587.0">
+                           <children>
+                              <GridPane prefHeight="247.0" prefWidth="580.0">
+                                <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="236.0" minWidth="10.0" prefWidth="208.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="196.0" minWidth="10.0" prefWidth="118.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="378.0" minWidth="10.0" prefWidth="318.0" />
+                                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="192.0" minWidth="10.0" prefWidth="192.0" />
+                                </columnConstraints>
+                                <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                </rowConstraints>
+                                 <children>
+                                    <Label alignment="BOTTOM_RIGHT" prefHeight="17.0" prefWidth="218.0" text="Wiek">
+                                       <opaqueInsets>
+                                          <Insets left="10.0" right="10.0" />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <Label alignment="BOTTOM_RIGHT" prefHeight="17.0" prefWidth="218.0" text="Pesel" GridPane.rowIndex="1">
+                                       <opaqueInsets>
+                                          <Insets left="10.0" right="10.0" />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <Label alignment="BOTTOM_RIGHT" prefHeight="17.0" prefWidth="215.0" text="Kwota kredytu" GridPane.rowIndex="2">
+                                       <opaqueInsets>
+                                          <Insets left="10.0" right="10.0" />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <Label alignment="BOTTOM_RIGHT" prefHeight="17.0" prefWidth="221.0" text="Planowy okres kredytu (w mies.)" GridPane.rowIndex="3">
+                                       <opaqueInsets>
+                                          <Insets left="10.0" right="10.0" />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <Label alignment="BOTTOM_RIGHT" prefHeight="17.0" prefWidth="217.0" text="Ilośc dzieci" GridPane.rowIndex="4">
+                                       <opaqueInsets>
+                                          <Insets left="10.0" right="10.0" />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <Label GridPane.rowIndex="5">
+                                       <opaqueInsets>
+                                          <Insets left="10.0" />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <TextField id="pesel" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                    <TextField id="age" GridPane.columnIndex="1" />
+                                    <TextField id="month" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                    <TextField id="cash" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <TextField id="children" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label alignment="BOTTOM_RIGHT" prefHeight="17.0" prefWidth="219.0" text="Czy posiadasz kredyt" GridPane.rowIndex="5">
+                                       <opaqueInsets>
+                                          <Insets left="10.0" right="10.0" />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <Label alignment="BOTTOM_RIGHT" prefHeight="17.0" prefWidth="222.0" text="Czy jesteś na liscie dłużników?" GridPane.rowIndex="6">
+                                       <opaqueInsets>
+                                          <Insets left="10.0" right="10.0" />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <ChoiceBox id="listOfDebtor" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                                    <ChoiceBox id="anotherCredits" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="326.0" text="Rodzaj twojej umowy" GridPane.columnIndex="2">
+                                       <opaqueInsets>
+                                          <Insets left="10.0" right="10.0" />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="328.0" text="Czas trwania umowy w miesiącach" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                       <opaqueInsets>
+                                          <Insets left="10.0" right="10.0" />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="17.0" prefWidth="327.0" text="Średnie zarobki netto" GridPane.columnIndex="2" GridPane.rowIndex="2">
+                                       <opaqueInsets>
+                                          <Insets left="10.0" right="10.0" />
+                                       </opaqueInsets>
+                                    </Label>
+                                    <TextField id="AvgPayout" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                                    <TextField id="workContractMonth" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                                    <ChoiceBox id="workContract" prefWidth="150.0" GridPane.columnIndex="3" />
+                                    <Button id="sendCreditBtn" mnemonicParsing="false" prefHeight="26.0" prefWidth="169.0" text="Wyślij wniosek o kredyt" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                                 </children>
+                              </GridPane>
+                           </children></VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </GridPane>
+         </children>
+      </GridPane>
+   </children>
+</AnchorPane>

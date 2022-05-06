@@ -3,14 +3,12 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -20,8 +18,7 @@
       <GridPane prefHeight="720.0" prefWidth="1280.0">
         <columnConstraints>
           <ColumnConstraints hgrow="ALWAYS" maxWidth="195.0" minWidth="-Infinity" prefWidth="137.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="587.0" minWidth="0.0" prefWidth="546.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="127.0" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="897.0" minWidth="40.0" prefWidth="616.0" />
         </columnConstraints>
         <rowConstraints>
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -59,11 +56,6 @@
                         <Cursor fx:constant="HAND" />
                      </cursor>
                   </Button>
-                   <Button id="creditapplication" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="52.0" prefWidth="147.0" style="-fx-background-color: transparent;" text="Twoje wnioski" GridPane.rowIndex="5">
-                       <cursor>
-                           <Cursor fx:constant="HAND" />
-                       </cursor>
-                   </Button>
                   <Button id="youraccout" fx:id="youraccout" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="49.0" prefWidth="149.0" style="-fx-background-color: Transparent;" text="Twoje konto" textOverrun="CLIP" GridPane.rowIndex="1">
                      <font>
                         <Font name="System Bold" size="14.0" />
@@ -88,44 +80,35 @@
                         <Insets left="10.0" />
                      </padding>
                   </Label>
+                  <Button id="creditapplication" alignment="BASELINE_LEFT" mnemonicParsing="false" prefHeight="52.0" prefWidth="147.0" style="-fx-background-color: transparent;" text="Twoje wnioski" GridPane.rowIndex="5">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
                </children>
             </GridPane>
-            <GridPane GridPane.columnIndex="1">
+            <GridPane prefHeight="718.0" prefWidth="732.0" GridPane.columnIndex="1">
               <columnConstraints>
-                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="120.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                  <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="480.0" minHeight="10.0" prefHeight="480.0" vgrow="SOMETIMES" />
-                <RowConstraints maxHeight="236.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Label alignment="TOP_LEFT" prefHeight="17.0" prefWidth="150.0" text="Historia przelewów">
+                  <Label alignment="TOP_LEFT" prefHeight="17.0" prefWidth="150.0" text="Twoje wnioski">
                      <padding>
                         <Insets left="10.0" />
                      </padding>
                   </Label>
-                  <VBox prefHeight="200.0" prefWidth="100.0" GridPane.rowIndex="2">
+                  <VBox prefHeight="477.0" prefWidth="630.0" GridPane.rowIndex="1">
                      <children>
-                        <VBox id="vbox_history" prefHeight="200.0" prefWidth="100.0" />
+                        <VBox id="vbox_history" prefHeight="358.0" prefWidth="587.0">
+                           <children>
+                              <VBox id="applications_holder" prefHeight="200.0" prefWidth="100.0" />
+                           </children></VBox>
                      </children>
                   </VBox>
-                  <HBox prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-                     <children>
-                        <HBox prefHeight="90.0" prefWidth="114.0">
-                           <children>
-                              <Label prefHeight="17.0" prefWidth="139.0" text="Historia z konta:" />
-                           </children>
-                        </HBox>
-                        <ChoiceBox id="account_select" prefWidth="150.0" />
-                        <Button id="show_history" mnemonicParsing="false" prefHeight="26.0" prefWidth="80.0" text="Pokaż">
-                           <HBox.margin>
-                              <Insets left="20.0" />
-                           </HBox.margin>
-                        </Button>
-                     </children>
-                  </HBox>
                </children>
             </GridPane>
          </children>
